@@ -5,15 +5,15 @@ import '../../model/data_model.dart';
 import '../../widgets/row_text.dart';
 
 class HomeScreen extends StatefulWidget {
-   HomeScreen({super.key});
+  HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  bool isFaverate=false;
-  double value=2.4;
+  double value = 2.4;
+  bool isFavorite=false;
 
   @override
   Widget build(BuildContext context) {
@@ -127,13 +127,15 @@ class _HomeScreenState extends State<HomeScreen> {
               RowText(
                 text: "Recommended ",
               ),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               SizedBox(
                 height: 410,
                 child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: dataModel.length,
-                    itemBuilder: (context, index){
+                    scrollDirection: Axis.horizontal,
+                    itemCount: dataModel.length,
+                    itemBuilder: (context, index) {
                       return Container(
                         margin: EdgeInsets.all(10),
                         width: 300,
@@ -145,83 +147,116 @@ class _HomeScreenState extends State<HomeScreen> {
                               BoxShadow(
                                   color: Colors.grey.shade300,
                                   spreadRadius: 2,
-                                  blurRadius: 2
-                              )
-                            ]
-                        ),
+                                  blurRadius: 2)
+                            ]),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Stack(
-                                children:[
-                                  Container(
-                                    width: double.infinity,
-                                    height: 270,
+                            Stack(children: [
+                              Container(
+                                width: double.infinity,
+                                height: 270,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.only(
+                                        topRight: Radius.circular(20),
+                                        topLeft: Radius.circular(20))),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.only(
+                                      topRight: Radius.circular(20),
+                                      topLeft: Radius.circular(20)),
+                                  child: Image.network(
+                                    dataModel[index].image,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                right: 10,
+                                top: 10,
+                                child: InkWell(
+                                  onTap: () {
+                                    print("clicked index $index");
+                                    setState(() {
+                                      isFavorite = !isFavorite;
+                                    });
+                                  },
+                                  child: Container(
+                                    width: 40,
+                                    height: 40,
                                     decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.only(topRight:Radius.circular(20), topLeft: Radius.circular(20))
-                                    ),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.only(topRight:Radius.circular(20), topLeft: Radius.circular(20)),
-                                      child: Image.network(dataModel[index].image,
-                                        fit: BoxFit.cover,
-                                      ),
+                                        shape: BoxShape.circle,
+                                        color: Colors.white),
+                                    child: isFavorite
+                                        ? Icon(
+                                      Icons.favorite,
+                                      color: Colors.red,
+                                    )
+                                        : Icon(
+                                      Icons.favorite_outline,
+                                      color: Colors.red,
                                     ),
                                   ),
-
-                                  Positioned(
-                                    right: 10,
-                                    top: 10,
-                                    child: InkWell(
-                                      onTap: (){
-                                        print("clicked");
-                                        setState(() {
-                                          isFaverate=!isFaverate;
-                                        });
-                                      },
-                                      child: Container(
-                                        width: 40,
-                                        height: 40,
-                                        decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: Colors.white
-                                        ),
-                                        child:isFaverate? Icon(Icons.favorite, color: Colors.red,):Icon(Icons.favorite_outline, color: Colors.red,),
-                                      ),
-                                    ),
-                                  )
-                                ]
-                            ),
+                                ),
+                              )
+                            ]),
                             Padding(
                               padding: const EdgeInsets.all(10),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(dataModel[index].title, style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),),
+                                  Text(
+                                    dataModel[index].title,
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold),
+                                  ),
                                   Row(
                                     children: [
                                       Icon(
                                         Icons.star,
                                         color: Colors.amber,
                                       ),
-                                      Text(dataModel[index].stars, style: TextStyle(fontWeight: FontWeight.bold),)
+                                      Text(
+                                        dataModel[index].stars,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      )
                                     ],
                                   )
                                 ],
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(right: 10, left: 10),
-                              child: Text(dataModel[index].subTitle, style: TextStyle(fontSize: 14, color: Colors.grey),),
+                              padding:
+                              const EdgeInsets.only(right: 10, left: 10),
+                              child: Text(
+                                dataModel[index].subTitle,
+                                style:
+                                TextStyle(fontSize: 14, color: Colors.grey),
+                              ),
                             ),
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: RichText(
                                 text: TextSpan(
-                                  style: TextStyle(color: Colors.black, fontSize: 36),
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 36),
                                   children: <TextSpan>[
                                     TextSpan(
-                                        text: "\$${dataModel[index].rent}", style: TextStyle(color: Colors.greenAccent, fontWeight: FontWeight.bold, fontSize: 15)),
-                                    TextSpan(text: " /night", style: TextStyle(color: Colors.black.withOpacity(0.6), fontWeight: FontWeight.bold, fontSize: 15)),
+                                        text: "\$${dataModel[index].rent}",
+                                        style: TextStyle(
+                                            color: Colors.greenAccent,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15)),
+                                    TextSpan(
+                                        text: " /night",
+                                        style: TextStyle(
+                                            color:
+                                            Colors.black.withOpacity(0.6),
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15)),
                                   ],
                                 ),
                               ),
@@ -229,24 +264,25 @@ class _HomeScreenState extends State<HomeScreen> {
                           ],
                         ),
                       );
-
                     }),
               ),
               RowText(
                 text: "Popular Destination",
               ),
-              SizedBox(height: 20,),
+              SizedBox(
+                height: 20,
+              ),
             ],
           ),
         ),
         SliverToBoxAdapter(
           child: ListView.builder(
-            physics: NeverScrollableScrollPhysics(),
+              physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemCount: dataModel.length,
-              itemBuilder:(context, index){
+              itemBuilder: (context, index) {
                 return Container(
-                  width: MediaQuery.of(context).size.width*0.92,
+                  width: MediaQuery.of(context).size.width * 0.92,
                   height: 120,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
@@ -255,10 +291,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         BoxShadow(
                             color: Colors.grey.shade200,
                             spreadRadius: 2,
-                            blurRadius: 2
-                        )
-                      ]
-                  ),
+                            blurRadius: 2)
+                      ]),
                   child: Row(
                     children: [
                       Container(
@@ -267,14 +301,16 @@ class _HomeScreenState extends State<HomeScreen> {
                         height: 100,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            color: Colors.white
-                        ),
+                            color: Colors.white),
                         child: ClipRRect(
                             borderRadius: BorderRadius.circular(10),
-                            child: Image.network(dataModel[index].image, fit: BoxFit.cover,)),
+                            child: Image.network(
+                              dataModel[index].image,
+                              fit: BoxFit.cover,
+                            )),
                       ),
                       Container(
-                        width: MediaQuery.of(context).size.width*0.6,
+                        width: MediaQuery.of(context).size.width * 0.6,
                         padding: EdgeInsets.all(15),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -283,21 +319,41 @@ class _HomeScreenState extends State<HomeScreen> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(dataModel[index].title, style: TextStyle(fontWeight: FontWeight.bold),),
-                                SizedBox(height: 20,),
+                                Text(
+                                  dataModel[index].title,
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
                                 RichText(
                                   text: TextSpan(
-                                    style: TextStyle(color: Colors.black, fontSize: 36),
+                                    style: TextStyle(
+                                        color: Colors.black, fontSize: 36),
                                     children: <TextSpan>[
                                       TextSpan(
-                                          text: "\$${dataModel[index].rent}", style: TextStyle(color: Colors.greenAccent, fontWeight: FontWeight.bold, fontSize: 12)),
-                                      TextSpan(text: " /night", style: TextStyle(color: Colors.black.withOpacity(0.6), fontWeight: FontWeight.bold, fontSize: 12)),
+                                          text: "\$${dataModel[index].rent}",
+                                          style: TextStyle(
+                                              color: Colors.greenAccent,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 12)),
+                                      TextSpan(
+                                          text: " /night",
+                                          style: TextStyle(
+                                              color:
+                                                  Colors.black.withOpacity(0.6),
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 12)),
                                     ],
                                   ),
                                 ),
                               ],
                             ),
-                            Text(dataModel[index].subTitle, style: TextStyle(fontSize: 12, color: Colors.grey),),
+                            Text(
+                              dataModel[index].subTitle,
+                              style:
+                                  TextStyle(fontSize: 12, color: Colors.grey),
+                            ),
                             Row(
                               children: [
                                 SmoothStarRating(
@@ -313,9 +369,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                     halfFilledIconData: Icons.star,
                                     color: Colors.amber,
                                     borderColor: Colors.amber,
-                                    spacing:0.0
-                                ),
-                                Text("$value", style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),)
+                                    spacing: 0.0),
+                                Text(
+                                  "$value",
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold),
+                                )
                               ],
                             ),
                           ],
@@ -324,10 +384,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                 );
-
-              } ),
+              }),
         )
       ]),
     );
   }
 }
+
